@@ -3,6 +3,7 @@ package com.ambev.order.integration;
 import com.ambev.order.application.dto.request.OrderItemRequest;
 import com.ambev.order.application.dto.request.OrderRequest;
 import com.ambev.order.application.dto.response.OrderResponse;
+import com.ambev.order.config.PostgresTestContainer;
 import com.ambev.order.domain.enums.OrderStatus;
 import com.ambev.order.domain.model.Order;
 import com.ambev.order.domain.repository.OrderRepository;
@@ -10,13 +11,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -36,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ContextConfiguration(initializers = PostgresTestContainer.Initializer.class)
 public class OrderFlowIntegrationTest {
 
     @Autowired
