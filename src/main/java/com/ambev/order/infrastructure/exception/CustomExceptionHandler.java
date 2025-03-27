@@ -1,5 +1,6 @@
 package com.ambev.order.infrastructure.exception;
 
+import com.ambev.order.application.exception.OrderNotFoundException;
 import com.ambev.order.domain.exception.OrderAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,4 +24,16 @@ public class CustomExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
+
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Object> handleOrderAlreadyExistsException(OrderNotFoundException ex) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        errorResponse.put("timestamp", LocalDateTime.now());
+        errorResponse.put("status", HttpStatus.NOT_FOUND.value());
+        errorResponse.put("error", "Pedido não encontrado");
+        errorResponse.put("message", ex.getMessage());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
 }

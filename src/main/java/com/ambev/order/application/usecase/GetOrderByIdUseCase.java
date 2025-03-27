@@ -1,7 +1,9 @@
 package com.ambev.order.application.usecase;
 
 import com.ambev.order.application.dto.response.OrderResponse;
+import com.ambev.order.application.exception.OrderNotFoundException;
 import com.ambev.order.application.service.OrderMapper;
+import com.ambev.order.domain.exception.OrderAlreadyExistsException;
 import com.ambev.order.domain.model.Order;
 import com.ambev.order.domain.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,7 @@ public class GetOrderByIdUseCase {
 
     public OrderResponse execute(UUID id) {
         Order order = orderRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+            .orElseThrow(OrderNotFoundException::new);
         return orderMapper.toResponse(order);
     }
 }
